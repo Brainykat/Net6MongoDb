@@ -1,5 +1,12 @@
+using CommonBase.Data;
+using CommonBase.Data.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
+//DI mongo connection and services
+builder.Services.Configure<MongoDbDatabaseSettings>(
+    builder.Configuration.GetSection(nameof(MongoDbDatabaseSettings)));
+builder.Services.RegisterNestServices();
 // Add services to the container.
 
 builder.Services.AddControllers();

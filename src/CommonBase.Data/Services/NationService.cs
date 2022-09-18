@@ -26,11 +26,13 @@ namespace CommonBase.Data.Services
     public async Task<List<Nation>> GetAsync() =>
         await nationCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Nation?> GetAsync(Guid id) =>
-        await nationCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
+    public async Task<Nation?> GetAsync(Guid id)
+     => await nationCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
-    public async Task CreateAsync(Nation newNation) =>
-        await nationCollection.InsertOneAsync(newNation);
+
+    public async Task CreateAsync(Nation newNation)
+    => await nationCollection.InsertOneAsync(newNation);
+    
 
     public async Task UpdateAsync(Guid id, Nation updatedNation) =>
         await nationCollection.ReplaceOneAsync(x => x.Id == id, updatedNation);
