@@ -2,13 +2,13 @@
 {
   public class Bank : EntityBase
   {
-    public void AddBranch(Guid id, string code, string name) =>
+    public void AddBranch(string id, string code, string name) =>
       BankBranches.Add(BankBranch.Create(this.Id, id, code, name));
-    internal static Bank Create(string nationId, Guid id, string code, string name) =>
+    internal static Bank Create(string nationId, string id, string code, string name) =>
       new Bank(nationId, id, code, name);
-    private Bank(string nationId, Guid id, string code, string name)
+    private Bank(string nationId, string id, string code, string name)
     {
-      if(id==Guid.Empty) throw new ArgumentNullException(nameof(id));
+      if(string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
       Id = id.ToString();
       NationId = nationId;
       Code = code ?? throw new ArgumentNullException(nameof(code));

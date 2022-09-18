@@ -7,11 +7,11 @@
     public string BankId { get; set; }
     public Bank Bank { get; set; }
     public BankBranch() { }
-    internal static BankBranch Create(string bankId, Guid id, string code, string name) =>
+    internal static BankBranch Create(string bankId, string id, string code, string name) =>
       new BankBranch(bankId, id, code, name);
-    internal BankBranch(string bankId, Guid id, string code, string name)
+    internal BankBranch(string bankId, string id, string code, string name)
     {
-      if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+      if(string.IsNullOrWhiteSpace(id)) throw new ArgumentNullException(nameof(id));
       Id = id.ToString();
       if (string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
       if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
