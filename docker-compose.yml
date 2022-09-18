@@ -1,0 +1,26 @@
+version: '3.4'
+
+services:
+  mongodb:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    ports:
+      - 27017:27017
+    networks:
+        - setups-network
+  setups.api:
+    image: ${DOCKER_REGISTRY-}setupsapi
+    build:
+      context: .
+      dockerfile: src/Setups.API/Dockerfile
+    networks:
+        - setups-network
+    depends_on:
+        - "mongodb"
+networks:
+  setups-network:
+   driver: bridge
+
+volumes:
+  db_volume:
