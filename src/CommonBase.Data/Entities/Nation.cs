@@ -1,11 +1,12 @@
 ﻿namespace CommonBase.Data.Entities
 {
-  public class Nation
+  public class Nation: EntityBase
   {
-    public Nation(string id, string countryName, string currencyName, string currencySymbol, string currencyId, string phoneCode,
+    public Nation(Guid id, string countryName, string currencyName, string currencySymbol, string currencyId, string phoneCode,
       decimal minInitialAmount)
     {
-      Id = id ?? throw new ArgumentNullException(nameof(id));
+      if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
+      Id = id;
       CountryName = countryName ?? throw new ArgumentNullException(nameof(countryName));
       CurrencyName = currencyName ?? throw new ArgumentNullException(nameof(currencyName));
       CurrencySymbol = currencySymbol ?? throw new ArgumentNullException(nameof(currencySymbol));
@@ -14,7 +15,6 @@
       MinInitialAmount = minInitialAmount;
     }
     private Nation() { }
-    public string Id { get; set; } //": "01AF4C5A-2F30-408B-8279-821EC0B6C1D8",
     public string CountryName { get; set; } //": "Name",
     public string CurrencyName { get; set; } //": "Kenyan Shilling",
     public string CurrencySymbol { get; set; } //": "KSh",
@@ -23,8 +23,8 @@
     public decimal MinInitialAmount { get; set; } //15000
     public ICollection<Bank> Banks { get; set; } = new List<Bank>();
     public ICollection<County> Counties { get; set; } = new List<County>();
-    public void AddCounty(string code, string name) =>
-      Counties.Add(County.Create(Guid.Parse(Id), code, name));
+    public void AddCounty(Guid id,string code, string name) =>
+      Counties.Add(County.Create(this.Id,id, code, name));
     public void AddBank(Bank bank) => Banks.Add(bank);
   }
 }

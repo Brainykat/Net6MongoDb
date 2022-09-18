@@ -1,23 +1,23 @@
 ﻿namespace CommonBase.Data.Entities
 {
-  public class County
+  public class County :EntityBase
   {
-    public string Id { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
     public Guid NationId { get; set; }
     private County() { }
-    private County(Guid nationId, string code, string name)
+    private County(Guid nationId, Guid id, string code, string name)
     {
       if (string.IsNullOrWhiteSpace(code)) throw new ArgumentNullException(nameof(code));
       if (string.IsNullOrWhiteSpace(name)) throw new ArgumentNullException(nameof(name));
-      Id = Guid.NewGuid().ToString();
+      if(id == Guid.Empty) throw new ArgumentNullException(nameof(id)); 
+      Id = id;
       NationId = nationId;
       Name = name.Trim(); Code = code.Trim();
     }
-    public static County Create(Guid nationId, string code, string name)
+    public static County Create(Guid nationId,Guid id, string code, string name)
     {
-      return new County(nationId, code, name);
+      return new County(nationId,id, code, name);
     }
   }
 }

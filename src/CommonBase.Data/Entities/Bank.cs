@@ -1,20 +1,20 @@
 ﻿namespace CommonBase.Data.Entities
 {
-  public class Bank
+  public class Bank : EntityBase
   {
     public void AddBranch(string id, string code, string name) =>
-      BankBranches.Add(BankBranch.Create(Guid.Parse(Id), id, code, name));
-    internal static Bank Create(Guid nationId, string id, string code, string name) =>
+      BankBranches.Add(BankBranch.Create(this.Id, id, code, name));
+    internal static Bank Create(Guid nationId, Guid id, string code, string name) =>
       new Bank(nationId, id, code, name);
-    private Bank(Guid nationId, string id, string code, string name)
+    private Bank(Guid nationId, Guid id, string code, string name)
     {
-      Id = id ?? throw new ArgumentNullException(nameof(id));
+      if(id==Guid.Empty) throw new ArgumentNullException(nameof(id));
+      Id = id;
       NationId = nationId;
       Code = code ?? throw new ArgumentNullException(nameof(code));
       Name = name ?? throw new ArgumentNullException(nameof(name));
     }
     private Bank() { }
-    public string Id { get; set; }
     public Guid NationId { get; set; }
     public string Code { get; set; }
     public string Name { get; set; }
