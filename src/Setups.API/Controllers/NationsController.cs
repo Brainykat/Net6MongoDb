@@ -10,9 +10,11 @@ namespace Setups.API.Controllers
   public class NationsController : ControllerBase
   {
     private readonly INationService service;
-    public NationsController(INationService service)
+    private readonly ILogger<NationsController> logger;
+    public NationsController(INationService service, ILogger<NationsController> logger)
     {
       this.service = service ?? throw new ArgumentNullException(nameof(service));
+      this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     [HttpGet]
@@ -22,58 +24,92 @@ namespace Setups.API.Controllers
     [HttpGet("{nationId:length(24)}")]
     public async Task<ActionResult<Nation>> Get(string nationId)
     {
-      var nation = await service.GetAsync(nationId);
-
-      if (nation is null)
+      try
       {
-        return NotFound();
-      }
+        var nation = await service.GetAsync(nationId);
 
-      return Ok(nation);
+        if (nation is null)
+        {
+          return NotFound();
+        }
+
+        return Ok(nation);
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex.Message, ex);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex);
+      }
     }
 
 
     [HttpPost]
     public async Task<IActionResult> Post([FromBody] NationDto dto)
     {
-      var nation = Nation.Create(dto.Id, dto.CountryName, dto.CurrencyName, dto.CurrencySymbol,
+      try
+      {
+        var nation = Nation.Create(dto.Id, dto.CountryName, dto.CurrencyName, dto.CurrencySymbol,
        dto.CurrencyId, dto.PhoneCode, dto.MinInitialAmount);
-      await service.CreateAsync(nation);
+        await service.CreateAsync(nation);
 
-      return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
+        return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
+      }
+      catch (Exception ex)
+      {
+        logger.LogError(ex.Message, ex);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex);
+      }
+      
     }
 
 
     [HttpPut("{nationId:length(24)}")]
     public async Task<IActionResult> Update(string nationId, Nation dto)
     {
-      var book = await service.GetAsync(nationId);
-
-      if (book is null)
+      try
       {
-        return NotFound();
+        var nation = await service.GetAsync(nationId);
+
+        if (nation is null)
+        {
+          return NotFound();
+        }
+
+        dto.Id = nation.Id;
+
+        await service.UpdateAsync(nationId, dto);
+
+        return NoContent();
       }
-
-      dto.Id = book.Id;
-
-      await service.UpdateAsync(nationId, dto);
-
-      return NoContent();
+      catch (Exception ex)
+      {
+        logger.LogError(ex.Message, ex);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex);
+      }
     }
 
     [HttpDelete("{nationId:length(24)}")]
     public async Task<IActionResult> Delete(string nationId)
     {
-      var book = await service.GetAsync(nationId);
-
-      if (book is null)
+      try
       {
-        return NotFound();
+        var nation = await service.GetAsync(nationId);
+
+        if (nation is null)
+        {
+          return NotFound();
+        }
+
+        await service.RemoveAsync(nationId);
+
+        return NoContent();
       }
-
-      await service.RemoveAsync(nationId);
-
-      return NoContent();
+      catch (Exception ex)
+      {
+        logger.LogError(ex.Message, ex);
+        return StatusCode(StatusCodes.Status500InternalServerError, ex);
+      }
+      
     }
   }
 }

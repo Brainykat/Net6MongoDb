@@ -36,7 +36,7 @@ namespace CommonBase.Data.Entities
     public decimal MinInitialAmount { get; set; } //15000
     public ICollection<Bank?> Banks { get; set; } = new List<Bank?>();
     public ICollection<County?> Counties { get; set; } = new List<County?>();
-    public void AddCounty(Guid id,string code, string name) =>
+    public void AddCounty(string id,string code, string name) =>
       Counties.Add(County.Create(this.Id,id, code, name));
     public void AddBank(Bank bank) => Banks.Add(bank);
   }
