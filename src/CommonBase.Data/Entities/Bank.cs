@@ -2,7 +2,7 @@
 {
   public class Bank : EntityBase
   {
-    public void AddBranch(string id, string code, string name) =>
+    public void AddBranch(Guid id, string code, string name) =>
       BankBranches.Add(BankBranch.Create(this.Id, id, code, name));
     internal static Bank Create(Guid nationId, Guid id, string code, string name) =>
       new Bank(nationId, id, code, name);

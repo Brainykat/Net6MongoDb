@@ -1,4 +1,7 @@
-﻿namespace CommonBase.Data.Entities
+﻿using MongoDB.Bson.Serialization.Attributes;
+using System.Text.Json.Serialization;
+
+namespace CommonBase.Data.Entities
 {
   public class Nation: EntityBase
   {
@@ -15,8 +18,14 @@
       MinInitialAmount = minInitialAmount;
     }
     private Nation() { }
+    //[BsonElement("Name")]
+    [JsonPropertyName("Name")]
     public string CountryName { get; set; } //": "Name",
+
+    [JsonPropertyName("Currency")]
     public string CurrencyName { get; set; } //": "Kenyan Shilling",
+
+    //[JsonPropertyName("Currency")]
     public string CurrencySymbol { get; set; } //": "KSh",
     public string CurrencyId { get; set; } //": "KES",
     public string PhoneCode { get; set; } //": "+254"
