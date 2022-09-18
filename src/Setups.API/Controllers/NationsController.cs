@@ -1,4 +1,5 @@
-﻿using CommonBase.Data.Entities;
+﻿using CommonBase.Data.Dtos;
+using CommonBase.Data.Entities;
 using CommonBase.Data.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,7 @@ namespace Setups.API.Controllers
     public async Task<IActionResult> Get()
       => Ok(await service.GetAsync());
 
-    [HttpGet("{nationId}")]
+    [HttpGet("{nationId:length(24)}")]
     public async Task<ActionResult<Nation>> Get(string nationId)
     {
       var nation = await service.GetAsync(nationId);
@@ -33,15 +34,17 @@ namespace Setups.API.Controllers
 
 
     [HttpPost]
-    public async Task<IActionResult> Post([FromBody] Nation dto)
+    public async Task<IActionResult> Post([FromBody] NationDto dto)
     {
-      await service.CreateAsync(dto);
+      var nation = Nation.Create(dto.Id, dto.CountryName, dto.CurrencyName, dto.CurrencySymbol,
+       dto.CurrencyId, dto.PhoneCode, dto.MinInitialAmount);
+      await service.CreateAsync(nation);
 
       return CreatedAtAction(nameof(Get), new { id = dto.Id }, dto);
     }
 
 
-    [HttpPut("{nationId}")]
+    [HttpPut("{nationId:length(24)}")]
     public async Task<IActionResult> Update(string nationId, Nation dto)
     {
       var book = await service.GetAsync(nationId);
@@ -58,7 +61,7 @@ namespace Setups.API.Controllers
       return NoContent();
     }
 
-    [HttpDelete("{nationId}")]
+    [HttpDelete("{nationId:length(24)}")]
     public async Task<IActionResult> Delete(string nationId)
     {
       var book = await service.GetAsync(nationId);
