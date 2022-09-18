@@ -6,8 +6,8 @@ namespace CommonBase.Data.Interfaces
   {
     Task CreateAsync(Nation newNation);
     Task<List<Nation>> GetAsync();
-    Task<Nation?> GetAsync(Guid id);
-    Task RemoveAsync(Guid id);
-    Task UpdateAsync(Guid id, Nation updatedNation);
+    Task<Nation?> GetAsync(string id);
+    Task RemoveAsync(string id);
+    Task UpdateAsync(string id, Nation updatedNation);
   }
 }

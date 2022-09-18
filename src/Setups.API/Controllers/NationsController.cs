@@ -19,7 +19,7 @@ namespace Setups.API.Controllers
       => Ok(await service.GetAsync());
 
     [HttpGet("{nationId}")]
-    public async Task<ActionResult<Nation>> Get(Guid nationId)
+    public async Task<ActionResult<Nation>> Get(string nationId)
     {
       var nation = await service.GetAsync(nationId);
 
@@ -42,7 +42,7 @@ namespace Setups.API.Controllers
 
 
     [HttpPut("{nationId}")]
-    public async Task<IActionResult> Update(Guid nationId, Nation dto)
+    public async Task<IActionResult> Update(string nationId, Nation dto)
     {
       var book = await service.GetAsync(nationId);
 
@@ -59,7 +59,7 @@ namespace Setups.API.Controllers
     }
 
     [HttpDelete("{nationId}")]
-    public async Task<IActionResult> Delete(Guid nationId)
+    public async Task<IActionResult> Delete(string nationId)
     {
       var book = await service.GetAsync(nationId);
 

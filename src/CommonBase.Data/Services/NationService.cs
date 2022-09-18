@@ -26,7 +26,7 @@ namespace CommonBase.Data.Services
     public async Task<List<Nation>> GetAsync() =>
         await nationCollection.Find(_ => true).ToListAsync();
 
-    public async Task<Nation?> GetAsync(Guid id)
+    public async Task<Nation?> GetAsync(string id)
      => await nationCollection.Find(x => x.Id == id).FirstOrDefaultAsync();
 
 
@@ -34,10 +34,10 @@ namespace CommonBase.Data.Services
     => await nationCollection.InsertOneAsync(newNation);
     
 
-    public async Task UpdateAsync(Guid id, Nation updatedNation) =>
+    public async Task UpdateAsync(string id, Nation updatedNation) =>
         await nationCollection.ReplaceOneAsync(x => x.Id == id, updatedNation);
 
-    public async Task RemoveAsync(Guid id) =>
+    public async Task RemoveAsync(string id) =>
         await nationCollection.DeleteOneAsync(x => x.Id == id);
   }
 }

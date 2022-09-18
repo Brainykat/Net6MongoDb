@@ -9,7 +9,7 @@ namespace CommonBase.Data.Entities
       decimal minInitialAmount)
     {
       if(id == Guid.Empty) throw new ArgumentNullException(nameof(id));
-      Id = id;
+      Id = id.ToString();
       CountryName = countryName ?? throw new ArgumentNullException(nameof(countryName));
       CurrencyName = currencyName ?? throw new ArgumentNullException(nameof(currencyName));
       CurrencySymbol = currencySymbol ?? throw new ArgumentNullException(nameof(currencySymbol));
